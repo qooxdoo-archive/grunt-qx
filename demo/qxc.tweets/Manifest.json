@@ -1,0 +1,33 @@
+{
+  "info" :
+  {
+    "name" : "qxc.tweets",
+
+    "summary" : "Custom Application",
+    "description" : "This is a skeleton for a custom application with qooxdoo.",
+
+    "homepage" : "http://some.homepage.url/",
+
+    "license" : "Apache 2.0",
+    "authors" :
+    [
+      {
+        "name" : "René Jochum (pcdummy)",
+        "email" : "rene@webmeisterei.com"
+      }
+    ],
+
+    "version" : "master",
+    "qooxdoo-versions": ["5.0.1"]
+  },
+
+  "provides" :
+  {
+    "namespace"   : "qxc.qxc.tweets",
+    "encoding"    : "utf-8",
+    "class"       : "source/class",
+    "resource"    : "source/resource",
+    "translation" : "source/translation",
+    "type"        : "application"
+  }
+}

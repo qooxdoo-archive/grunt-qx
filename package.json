@@ -1,7 +1,7 @@
 {
   "name": "grunt-qxcompiler",
   "description": "A grunt plugin which builds your Qooxdoo app.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/drawstack/grunt-qxcompiler",
   "license": "MIT",
   "author": {
@@ -47,7 +47,9 @@
     "eslint": "^3.3.1",
     "eslint-config-xo-space": "^0.14.0",
     "grunt": "^1.0.1",
-    "grunt-contrib-jshint": "^1.0.0"
+    "grunt-contrib-connect": "^1.0.2",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0"
   },
   "keywords": [
     "gruntplugin",
@@ -55,7 +57,8 @@
   ],
   "eslintConfig": {
     "extends": [
-      "xo-space"
+      "xo-space",
+      ".eslintrc-qx"
     ]
   }
 }

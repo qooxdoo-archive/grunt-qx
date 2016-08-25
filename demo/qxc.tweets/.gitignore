@@ -1,0 +1,4 @@
+build/
+node_modules/
+source/script/*
+!source/script/.gitkeep

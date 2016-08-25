@@ -1,0 +1,64 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: you@your.org\n"
+"POT-Creation-Date: 2016-08-01 16:54+0100\n"
+"PO-Revision-Date: 2016-08-01 16:54+0100\n"
+"Last-Translator: you <you@your.org>\n"
+"Language-Team: Team <yourteam@your.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: qxc.tweets/LoginWindow.js:11 qxc.tweets/LoginWindow.js:27
+msgid "Login"
+msgstr "Anmeldung"
+
+#: qxc.tweets/LoginWindow.js:21
+msgid "Username"
+msgstr "Benutzername"
+
+#: qxc.tweets/LoginWindow.js:25
+msgid "Password"
+msgstr "Passwort"
+
+#: qxc.tweets/LoginWindow.js:40
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: qxc.tweets/MainWindow.js:47 qxc.tweets/SettingsWindow.js:7
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: qxc.tweets/MainWindow.js:49
+msgid "Change the applications settings."
+msgstr "Ändern Sie die Anwendungseinstellungen."
+
+#: qxc.tweets/MainWindow.js:59
+msgid "Reload"
+msgstr "Neu laden"
+
+#: qxc.tweets/MainWindow.js:60
+msgid "Reload the qxc.tweets."
+msgstr "qxc.tweets neu laden."
+
+#: qxc.tweets/MainWindow.js:72
+msgid "Enter your message here..."
+msgstr "Geben Sie hier Ihre Nachricht ein..."
+
+#: qxc.tweets/MainWindow.js:81
+msgid "Post"
+msgstr "Senden"
+
+#: qxc.tweets/MainWindow.js:82
+msgid "Post this message on identi.ca"
+msgstr "Stelle diese Nachricht auf identi.ca"
+
+#: qxc.tweets/SettingsWindow.js:12
+msgid "Language"
+msgstr "Sprache"
+
+#: qxc.tweets/SettingsWindow.js:41
+msgid "$$languagename"
+msgstr "German"

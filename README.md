@@ -116,7 +116,7 @@ Type: `Array`
 
 Array of scripts to load before Qooxdoo init, each entry can have a
 sprintf style variable `%(<NAMESPACE>)` this will be replaced with the actual
-path of the libraries source folder with a source/hybrid target, when using the
+path of the libraries source folder on a source/hybrid target, when using the
 build target it will use '.' as replacement.
 
 #### options.addCss

@@ -1,56 +1,39 @@
-/*
- * grunt-qx-build
- * https://github.com/drawstack/grunt-qx-build
- *
- * Copyright (c) 2016 Rene Jochum
- * Licensed under the MIT license.
- */
+'use strict';
 
+// grunt
 module.exports = function (grunt) {
-  var qxpath = '../vendor/qooxdoo';
+  var qxpath = 'qooxdoo';
   if ('QOOXDOO_PATH' in process.env) {
     qxpath = process.env.QOOXDOO_PATH;
   }
 
-  // Project configuration.
-  grunt.initConfig({
-    jshint: {
-      all: [
-        'Gruntfile.js',
-        'tasks/*.js'
-      ],
-      options: {
-        jshintrc: '.jshintrc'
-      }
-    },
-
-    // Configuration to be run
+  var config = {
     qxcompiler: {
       options: {
         appClass: 'qxc.tweets.Application',
         appName: 'qxc.tweets',
         appTitle: 'qxc.tweets Demo',
         theme: 'qxc.tweets.theme.Theme',
-        locales: ['en', 'de'],
+        locales: ['en'],
         addScript: [],
         addCss: [],
         libraryDirs: [
           qxpath + '/framework',
-          'demo/qxc.tweets'
+          '.'
         ]
       },
 
       source: {
         options: {
           target: 'source',
-          outDir: 'demo/qxc.tweets/build/source/'
+          outDir: 'build/source/'
         }
       },
 
       build: {
         options: {
           target: 'build',
-          outDir: 'demo/qxc.tweets/build/build/',
+          outDir: 'build/build/',
           // Only available within the 'build' target.
           minify: true
         }
@@ -59,15 +42,15 @@ module.exports = function (grunt) {
       hybrid: {
         options: {
           target: 'hybrid',
-          outDir: 'demo/qxc.tweets/build/hybrid/'
+          outDir: 'build/hybrid/'
         }
       }
     },
 
     watch: {
-      tweets: {
+      qxc.tweets: {
         files: [
-          'demo/qxc.tweets/source/class/**/*.js'
+          'source/class/**/*.js'
         ],
         tasks: ['qxcompiler:source']
       }
@@ -77,22 +60,18 @@ module.exports = function (grunt) {
       server: {
         options: {
           livereload: true,
-          base: 'demo/qxc.tweets/build/',
+          base: '.',
           port: 8000
         }
       }
     }
-  });
+  };
 
-  // Actually load this plugin's task(s).
-  grunt.loadTasks('tasks');
+  grunt.initConfig(config);
+
+  grunt.loadNpmTasks('grunt-qxcompiler');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
-
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-
-  grunt.registerTask('lint', ['jshint']);
 
   // Compile source, run server and watch it
   grunt.registerTask('serve', [
@@ -101,6 +80,7 @@ module.exports = function (grunt) {
     'watch'
   ]);
 
-  // lint by default
-  grunt.registerTask('default', ['lint']);
+  grunt.registerTask('default', [
+    'qxcompiler:source'
+  ]);
 };
