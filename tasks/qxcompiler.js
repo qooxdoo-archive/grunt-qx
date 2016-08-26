@@ -41,11 +41,30 @@ module.exports = function (grunt) {
     var addVariables = {};
     options.libraryDirs.forEach(function (libraryDir) {
       var m = new gqxc.Manifest(libraryDir);
+
+      var addVarStore = addVariables;
+      var namespace = m.getNamespace().toUpperCase();
+      var splitted = namespace.split('.');
+
       if (options.target === 'source' || options.target === 'hybrid') {
-        libraryDir = path.join(process.cwd(), libraryDir, 'source');
-        addVariables[m.getNamespace().toUpperCase()] = libraryDir;
+        libraryDir = path.join('..', '..', libraryDir, 'source');
+        for (var i = 0; i < splitted.length - 1; i++) {
+          var sp = splitted[i];
+          if (!(sp in addVarStore)) {
+            addVarStore[sp] = {};
+          }
+          addVarStore = addVarStore[sp];
+        }
+        addVarStore[splitted[splitted.length - 1]] = libraryDir;
       } else {
-        addVariables[m.getNamespace().toUpperCase()] = '.';
+        for (var x = 0; x < splitted.length - 1; x++) {
+          var sp2 = splitted[x];
+          if (!(sp2 in addVarStore)) {
+            addVarStore[sp2] = {};
+          }
+          addVarStore = addVarStore[sp2];
+        }
+        addVarStore[splitted[splitted.length - 1]] = '.';
       }
     });
 
