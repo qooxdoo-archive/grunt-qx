@@ -61,7 +61,8 @@ grunt.initConfig({
     source: {
       options: {
         target: 'source',
-        outDir: 'build/source/'
+        outDir: 'build/source/',
+        copyResources: true
       }
     },
 
@@ -128,6 +129,19 @@ Same replacement as with `addScript` can happen  here.
 Type: `Array`
 
 Relative or absolute paths to the libraries to include, each MUST have a "Manifest.json", make sure to add Qooxdoo itself here.
+
+#### options.minify
+Type: `Boolean`
+Default: true
+
+Minify the result in `build` targets?
+
+#### options.copyResources
+Type: `Boolean`
+Default: false
+
+Copy resources into the output directory on `source` targets?
+
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).

@@ -3,27 +3,27 @@
   {
     "name" : "qxc.tweets",
 
-    "summary" : "Custom Application",
-    "description" : "This is a skeleton for a custom application with qooxdoo.",
+    "summary" : "Qooxdoo Tweets Tutorial with grunt-qxcompiler",
+    "description" : "Qooxdoo Tweets Tutorial with grunt-qxcompiler.",
 
-    "homepage" : "http://some.homepage.url/",
+    "homepage" : "https://github.com/pcdummy/qooxdoo-tweets-tutorial/",
 
-    "license" : "Apache 2.0",
+    "license" : "MIT",
     "authors" :
     [
       {
         "name" : "René Jochum (pcdummy)",
-        "email" : "rene@webmeisterei.com"
+        "email" : "rene@jochums.at"
       }
     ],
 
     "version" : "master",
-    "qooxdoo-versions": ["5.0.1"]
+    "qooxdoo-versions": ["5.1.0"]
   },
 
   "provides" :
   {
-    "namespace"   : "qxc.qxc.tweets",
+    "namespace"   : "qxc.tweets",
     "encoding"    : "utf-8",
     "class"       : "source/class",
     "resource"    : "source/resource",

@@ -34,7 +34,9 @@ module.exports = function (grunt) {
       locales: ['en'],
       addScript: [],
       addCss: [],
-      libraryDirs: []
+      libraryDirs: [],
+      // Only available within the 'source' target.
+      copyResources: false
     });
 
     // addScript/addCss Variables
@@ -83,7 +85,8 @@ module.exports = function (grunt) {
         outDir = path.join(process.cwd(), options.outDir);
         target = new qxcompiler.targets.SourceTarget(outDir).set({
           addScript: options.addScript,
-          addCss: options.addCss
+          addCss: options.addCss,
+          copyResources: options.copyResources
         });
         break;
       case 'hybrid':

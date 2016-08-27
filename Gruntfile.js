@@ -7,7 +7,7 @@
  */
 
 module.exports = function (grunt) {
-  var qxpath = '../vendor/qooxdoo';
+  var qxpath = 'qooxdoo';
   if ('QOOXDOO_PATH' in process.env) {
     qxpath = process.env.QOOXDOO_PATH;
   }
@@ -40,14 +40,15 @@ module.exports = function (grunt) {
         ]
       },
 
-      source: {
+      tweetsSource: {
         options: {
           target: 'source',
-          outDir: 'demo/qxc.tweets/build/source/'
+          outDir: 'demo/qxc.tweets/build/source/',
+          copyResources: true
         }
       },
 
-      build: {
+      tweetsBuild: {
         options: {
           target: 'build',
           outDir: 'demo/qxc.tweets/build/build/',
@@ -56,7 +57,7 @@ module.exports = function (grunt) {
         }
       },
 
-      hybrid: {
+      tweetsHybrid: {
         options: {
           target: 'hybrid',
           outDir: 'demo/qxc.tweets/build/hybrid/'
@@ -69,15 +70,15 @@ module.exports = function (grunt) {
         files: [
           'demo/qxc.tweets/source/class/**/*.js'
         ],
-        tasks: ['qxcompiler:source']
+        tasks: ['qxcompiler:tweetsSource']
       }
     },
 
     connect: {
       server: {
         options: {
-          livereload: true,
-          base: 'demo/qxc.tweets/build/',
+          livereload: false,
+          base: 'demo/qxc.tweets/build/source',
           port: 8000
         }
       }
@@ -96,7 +97,7 @@ module.exports = function (grunt) {
 
   // Compile source, run server and watch it
   grunt.registerTask('serve', [
-    'qxcompiler:source',
+    'qxcompiler:tweetsSource',
     'connect:server',
     'watch'
   ]);

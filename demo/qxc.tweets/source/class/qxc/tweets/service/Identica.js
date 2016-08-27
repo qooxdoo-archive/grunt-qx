@@ -4,7 +4,7 @@ qx.Class.define('qxc.tweets.service.Identica', {
   properties: {
     tweets: {
       nullable: true,
-      event: 'changeqxc.tweets'
+      event: 'changeTweets'
     }
   },
 
@@ -13,11 +13,11 @@ qx.Class.define('qxc.tweets.service.Identica', {
 
     fetchTweets: function () {
       if (this.__store === null) {
-        var url = 'http://demo.qooxdoo.org/5.0.1/qxc.tweets_step4.5/resource/qxc.tweets/service.js';
+        var url = 'http://demo.qooxdoo.org/5.0.1/tweets_step4.5/resource/tweets/service.js';
         this.__store = new qx.data.store.Jsonp();
         this.__store.setCallbackName('callback');
         this.__store.setUrl(url);
-        this.__store.bind('model', this, 'qxc.tweets');
+        this.__store.bind('model', this, 'tweets');
       } else {
         this.__store.reload();
       }
