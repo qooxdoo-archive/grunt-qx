@@ -25,7 +25,7 @@ module.exports = function (grunt) {
     },
 
     // Configuration to be run
-    qxcompiler: {
+    qx: {
       options: {
         appClass: 'qxc.tweets.Application',
         appName: 'qxc.tweets',

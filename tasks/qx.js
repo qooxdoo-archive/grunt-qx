@@ -18,7 +18,7 @@ module.exports = function (grunt) {
   // Please see the Grunt documentation for more information regarding task
   // creation: http://gruntjs.com/creating-tasks
 
-  grunt.registerMultiTask('qxcompiler', 'Qooxdoo builder.', function () {
+  grunt.registerMultiTask('qx', 'Qooxdoo builder.', function () {
     const STARTTIME = new Date();
 
     // Merge task-specific and/or target-specific options with these defaults.

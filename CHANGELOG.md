@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.1.4 (2016-08-27)
+
+- Renamed `grunt-qxcompiler` to `grunt-qx`.
+  [pcdummy]
+
 ### 0.1.3 (2016-08-27)
 
 - Add support for copying resources in source builds.

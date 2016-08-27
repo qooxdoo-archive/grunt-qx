@@ -1,4 +1,4 @@
-# grunt-qxcompiler
+# grunt-qx
 
 This plugin allows you to compile your Qooxdoo app with [qxcompiler](https://github.com/johnspackman/qxcompiler),
 it adds ES6 compatiblity, multi app compilation and allows you to include contribs easily.
@@ -13,19 +13,19 @@ This plugin requires Grunt `~1.0.1`
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
 ```shell
-npm install grunt-qxcompiler --save-dev
+npm install grunt-qx --save-dev
 ```
 
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
-grunt.loadNpmTasks('grunt-qxcompiler');
+grunt.loadNpmTasks('grunt-qx');
 ```
 
-## The "qxcompiler" task
+## The "qx" task
 
 ### Overview
-In your project's Gruntfile, add a section named `qxcompiler` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `qx` to the data object passed into `grunt.initConfig()`.
 
 ```js
 var qxpath = '../vendor/qooxdoo';
@@ -35,7 +35,7 @@ if ('QOOXDOO_PATH' in process.env) {
 
 grunt.initConfig({
   // Configuration to be run
-  qxcompiler: {
+  qx: {
     options: {
       appClass: 'qxpromiserest_demo.Application',
       appName: 'qxpromiserest_demo',
