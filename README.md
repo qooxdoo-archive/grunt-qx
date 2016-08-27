@@ -132,13 +132,13 @@ Relative or absolute paths to the libraries to include, each MUST have a "Manife
 
 #### options.minify
 Type: `Boolean`
-Default: true
+Default: `true`
 
 Minify the result in `build` targets?
 
 #### options.copyResources
 Type: `Boolean`
-Default: false
+Default: `true`
 
 Copy resources into the output directory on `source` targets?
 

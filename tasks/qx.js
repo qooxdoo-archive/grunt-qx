@@ -36,7 +36,7 @@ module.exports = function (grunt) {
       addCss: [],
       libraryDirs: [],
       // Only available within the 'source' target.
-      copyResources: false
+      copyResources: true
     });
 
     // addScript/addCss Variables
@@ -48,8 +48,16 @@ module.exports = function (grunt) {
       var namespace = m.getNamespace().toUpperCase();
       var splitted = namespace.split('.');
 
-      if (options.target === 'source' || options.target === 'hybrid') {
-        libraryDir = path.join('..', '..', libraryDir, 'source');
+      // If we aren't using copyResources and the target is either
+      // 'source' or 'hybrid' we have to make a relative path for
+      // the inclusion URL else we can use '.'.
+      if (!options.copyResources &&
+          (options.target === 'source' || options.target === 'hybrid')) {
+        // Relative path for external resources.
+        var libaryDir = path.relative(
+          path.join(process.cwd(), options.outDir),
+          path.join(process.cwd(), libaryDir, 'source')
+        );
         for (var i = 0; i < splitted.length - 1; i++) {
           var sp = splitted[i];
           if (!(sp in addVarStore)) {
@@ -70,7 +78,7 @@ module.exports = function (grunt) {
       }
     });
 
-    // now replace in addScript / addCss
+    // now replace variables in addScript / addCss.
     for (var i = 0; i < options.addScript.length; i++) {
       options.addScript[i] = sprintf(options.addScript[i], addVariables);
     }

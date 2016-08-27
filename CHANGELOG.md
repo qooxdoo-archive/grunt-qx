@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.1.6 (2016-08-27)
+
+- Add proper support for addScript/addCss and copyResources.
+  [pcdummy]
+
 ### 0.1.5 (2016-08-27)
 
 - Update the README to reflect the rename.
