@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.1.5 (2016-08-27)
+
+- Update the README to reflect the rename.
+  [pcdummy]
+
 ### 0.1.4 (2016-08-27)
 
 - Renamed `grunt-qxcompiler` to `grunt-qx`.
