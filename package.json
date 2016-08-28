@@ -1,7 +1,7 @@
 {
   "name": "grunt-qx",
   "description": "A grunt plugin which builds your Qooxdoo app.",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "homepage": "https://github.com/drawstack/grunt-qx",
   "license": "MIT",
   "author": {
