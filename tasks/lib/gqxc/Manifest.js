@@ -3,6 +3,15 @@ const fs = Promise.promisifyAll(require('fs'));
 const qx = require('qooxdoo');
 const path = require('path');
 
+/**
+ * A helper to check the hints map for the dependecy, this is for
+ * the Promise.map below.
+ *
+ * @param dependecy {String} String of dependecy to check.
+ * @param hints {Map} Map of hints.
+ *
+ * @return <Promise<string|error>> Promise with the result or an error.
+ */
 const depCheckHints = function (dependecy, hints) {
   if (dependecy in hints) {
     return Promise.resolve(hints[dependecy]);
@@ -13,6 +22,14 @@ const depCheckHints = function (dependecy, hints) {
   );
 };
 
+/**
+ * Check if the dependency exists as directory in a given directory.
+ *
+ * @param dependecy {String} String of dependecy to check.
+ * @param dir {List<string>} List of directories to check.
+ *
+ * @return <Promise<string|error>> Promise with the result or an error.
+ */
 const depInDir = function (dependency, dir) {
   var myDir = path.join(dir, dependency);
   return fs.lstatAsync(myDir)
@@ -69,6 +86,12 @@ module.exports = qx.Class.define('gqxc.Manifest', {
       return this.__data.provides.namespace;
     },
 
+    /**
+     * Returns a list of scripts to add, prepends '%(NAMESPACE)s/' to each of
+     * them, for later replacements.
+     *
+     * @return {List<string>} List of scripts with sprintf style namespace variable.
+     */
     getAddScript: function () {
       var result = [];
       if ('externalResources' in this.__data) {
@@ -82,6 +105,12 @@ module.exports = qx.Class.define('gqxc.Manifest', {
       return result;
     },
 
+    /**
+     * Returns a list of css files to add, prepends '%(NAMESPACE)s/' to each of
+     * them, for later replacements.
+     *
+     * @return {List<string>} List of scripts with sprintf style namespace variable.
+     */
     getAddCss: function () {
       var result = [];
       if ('externalResources' in this.__data) {
@@ -96,6 +125,24 @@ module.exports = qx.Class.define('gqxc.Manifest', {
     },
 
     /**
+     * Returns a list of recursively resolved {gqxc.Manifest} in LiFo order, means:
+     *
+     * Package: tweets
+     *    deps: [ 'qooxdoo-sdk' ]
+     *
+     * Package: qxc.promiserest
+     *    deps: [ 'qooxdoo-sdk', 'qxc.promise' ]
+     *
+     * Package: qxc.promise
+     *    deps: [ 'qooxdoo-sdk' ]
+     *
+     * Will return [
+     *    qgxc.Manifest<qooxdoo-sdk>,
+     *    gqxc.Manifest<qxc.promise>,
+     *    gqxc.Manifest<qxc.promiserest>,
+     *    gqxc.Manifest<tweets>
+     * ]
+     *
      * @return {Promise<List<gqxc.Manifest>>} List of dependencies in a Promise.
      */
     getDependecies: function (hints, dirs) {
@@ -131,7 +178,7 @@ module.exports = qx.Class.define('gqxc.Manifest', {
             return Promise.reject(err);
           });
       }).then(function (subDeps) {
-        // Now take the aggregated result and add it last in first in.
+        // Now take the aggregated result and add it last in first out.
         // At the end you have the first given library first and
         // the last last.
         subDeps.forEach(function (mDeps) {

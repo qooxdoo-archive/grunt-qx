@@ -28,10 +28,10 @@ module.exports = function (grunt) {
       minify: true,
       outDir: 'out/',
       appPath: '.',
-      appClass: 'qxexample.Application',
-      appName: 'qxexample',
-      appTitle: 'QxExample Demo',
-      theme: 'qxexample.theme.Theme',
+      appClass: 'tweets.Application',
+      appName: 'tweets',
+      appTitle: 'Tweets Demo',
+      theme: 'tweets.theme.Theme',
       locales: ['en'],
       addScript: [],
       addCss: [],
@@ -86,6 +86,8 @@ module.exports = function (grunt) {
           addVarStore[splitted[splitted.length - 1]] = '.';
         }
 
+        // Fetch addScript/addCss from each dependency and add it to
+        // to the options list.
         options.addScript = options.addScript.concat(m.getAddScript());
         options.addCss = options.addCss.concat(m.getAddCss());
       });
