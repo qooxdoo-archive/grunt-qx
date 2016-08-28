@@ -27,6 +27,7 @@ module.exports = function (grunt) {
       // Only available within the 'build' target.
       minify: true,
       outDir: 'out/',
+      appPath: '.',
       appClass: 'qxexample.Application',
       appName: 'qxexample',
       appTitle: 'QxExample Demo',
@@ -34,131 +35,145 @@ module.exports = function (grunt) {
       locales: ['en'],
       addScript: [],
       addCss: [],
-      libraryDirs: [],
+      libaryHints: {},
+      libraryDirs: [
+        'node_modules'
+      ],
       // Only available within the 'source' target.
       copyResources: true
     });
 
-    // addScript/addCss Variables
-    var addVariables = {};
-    options.libraryDirs.forEach(function (libraryDir) {
-      var m = new gqxc.Manifest(libraryDir);
-
-      var addVarStore = addVariables;
-      var namespace = m.getNamespace().toUpperCase();
-      var splitted = namespace.split('.');
-
-      // If we aren't using copyResources and the target is either
-      // 'source' or 'hybrid' we have to make a relative path for
-      // the inclusion URL else we can use '.'.
-      if (!options.copyResources &&
-          (options.target === 'source' || options.target === 'hybrid')) {
-        // Relative path for external resources.
-        var libaryDir = path.relative(
-          path.join(process.cwd(), options.outDir),
-          path.join(process.cwd(), libaryDir, 'source')
-        );
-        for (var i = 0; i < splitted.length - 1; i++) {
-          var sp = splitted[i];
-          if (!(sp in addVarStore)) {
-            addVarStore[sp] = {};
-          }
-          addVarStore = addVarStore[sp];
-        }
-        addVarStore[splitted[splitted.length - 1]] = libraryDir;
-      } else {
-        for (var x = 0; x < splitted.length - 1; x++) {
-          var sp2 = splitted[x];
-          if (!(sp2 in addVarStore)) {
-            addVarStore[sp2] = {};
-          }
-          addVarStore = addVarStore[sp2];
-        }
-        addVarStore[splitted[splitted.length - 1]] = '.';
-      }
-    });
-
-    // now replace variables in addScript / addCss.
-    for (var i = 0; i < options.addScript.length; i++) {
-      options.addScript[i] = sprintf(options.addScript[i], addVariables);
-    }
-    for (var x = 0; x < options.addCss.length; x++) {
-      options.addCss[x] = sprintf(options.addCss[x], addVariables);
-    }
-
-    var target;
-    var outDir;
-    switch (options.target) {
-      case 'source':
-        outDir = path.join(process.cwd(), options.outDir);
-        target = new qxcompiler.targets.SourceTarget(outDir).set({
-          addScript: options.addScript,
-          addCss: options.addCss,
-          copyResources: options.copyResources
-        });
-        break;
-      case 'hybrid':
-        outDir = path.join(process.cwd(), options.outDir);
-        target = new qxcompiler.targets.HybridTarget(outDir).set({
-          addScript: options.addScript,
-          addCss: options.addCss
-        });
-        break;
-      default: // build
-        outDir = path.join(process.cwd(), options.outDir);
-        target = new qxcompiler.targets.BuildTarget(outDir).set({
-          minify: options.minify,
-          addScript: options.addScript,
-          addCss: options.addCss
-        });
-    }
-
-    // The qxcompiler aka maker.
-    var maker = new qxcompiler.makers.AppMaker().set({
-      target: target,
-      locales: options.locales,
-      writeAllTranslations: true
-    });
-    maker.addApplication(new qxcompiler.Application(options.appClass, ['qx.core.Init']).set({
-      theme: options.theme,
-      name: options.appName,
-      environment: {
-        'qxt.applicationName': options.appTitle
-      }
-    }));
-
-    // Per library maker.addLibrary(dir, callback);
-    var asyncSeries = [];
-    options.libraryDirs.forEach(function (libraryDir) {
-      asyncSeries.push(function (cb) {
-        grunt.verbose.writeln('Adding library: ' + libraryDir);
-        maker.addLibrary(libraryDir, cb);
-      });
-    });
-
-    asyncSeries.push(function (cb) {
-      grunt.log.writeln('Making the app - please be patient.');
-      maker.make(cb);
-    });
-
-    // Run it.
+    // Tell grunt to wait for my tasks.
     var done = this.async();
-    async.series(
-      asyncSeries,
-      function (err) {
-        if (err) {
-          grunt.log.error([err]);
-          done();
+
+    var appManifest = new gqxc.Manifest(options.appPath, grunt);
+    var depsPromise = appManifest.getDependecies(options.libaryHints, options.libraryDirs);
+    depsPromise.then(function (dependencies) {
+      // addScript/addCss Variables
+      var addVariables = {};
+
+      dependencies.forEach(function (m) {
+        var addVarStore = addVariables;
+        var namespace = m.getNamespace().toUpperCase();
+        var splitted = namespace.split('.');
+
+        // If we aren't using copyResources and the target is either
+        // 'source' or 'hybrid' we have to make a relative path for
+        // the inclusion URL else we can use '.'.
+        if (!options.copyResources &&
+            (options.target === 'source' || options.target === 'hybrid')) {
+          // Relative path for external resources.
+          var libraryDir = path.relative(
+            path.join(process.cwd(), options.outDir),
+            path.join(process.cwd(), m.getDirectory(), 'source')
+          );
+          for (var i = 0; i < splitted.length - 1; i++) {
+            var sp = splitted[i];
+            if (!(sp in addVarStore)) {
+              addVarStore[sp] = {};
+            }
+            addVarStore = addVarStore[sp];
+          }
+          addVarStore[splitted[splitted.length - 1]] = libraryDir;
         } else {
-          var diff = new Date().getTime() - STARTTIME.getTime();
-          diff /= 1000;
-          var mins = Math.floor(diff / 60);
-          var secs = diff - (mins * 60);
-          grunt.log.ok('Done in ' + mins + 'm ' + secs + 's');
-          grunt.log.ok('Output Directory is: ' + outDir);
-          done();
+          for (var x = 0; x < splitted.length - 1; x++) {
+            var sp2 = splitted[x];
+            if (!(sp2 in addVarStore)) {
+              addVarStore[sp2] = {};
+            }
+            addVarStore = addVarStore[sp2];
+          }
+          addVarStore[splitted[splitted.length - 1]] = '.';
         }
+
+        options.addScript = options.addScript.concat(m.getAddScript());
+        options.addCss = options.addCss.concat(m.getAddCss());
+      });
+
+      // now replace variables in addScript / addCss.
+      for (var i = 0; i < options.addScript.length; i++) {
+        options.addScript[i] = sprintf(options.addScript[i], addVariables);
       }
-    );
+      for (var x = 0; x < options.addCss.length; x++) {
+        options.addCss[x] = sprintf(options.addCss[x], addVariables);
+      }
+
+      // Select the target and set its options.
+      var target;
+      var outDir;
+      switch (options.target) {
+        case 'source':
+          outDir = path.join(process.cwd(), options.outDir);
+          target = new qxcompiler.targets.SourceTarget(outDir).set({
+            addScript: options.addScript,
+            addCss: options.addCss,
+            copyResources: options.copyResources
+          });
+          break;
+        case 'hybrid':
+          outDir = path.join(process.cwd(), options.outDir);
+          target = new qxcompiler.targets.HybridTarget(outDir).set({
+            addScript: options.addScript,
+            addCss: options.addCss
+          });
+          break;
+        default: // build
+          outDir = path.join(process.cwd(), options.outDir);
+          target = new qxcompiler.targets.BuildTarget(outDir).set({
+            minify: options.minify,
+            addScript: options.addScript,
+            addCss: options.addCss
+          });
+      }
+
+      // The qxcompiler aka maker.
+      var maker = new qxcompiler.makers.AppMaker().set({
+        target: target,
+        locales: options.locales,
+        writeAllTranslations: true
+      });
+      maker.addApplication(new qxcompiler.Application(options.appClass, ['qx.core.Init']).set({
+        theme: options.theme,
+        name: options.appName,
+        environment: {
+          'qxt.applicationName': options.appTitle
+        }
+      }));
+
+      // Per library maker.addLibrary(dir, callback);
+      var asyncSeries = [];
+      dependencies.forEach(function (m) {
+        asyncSeries.push(function (cb) {
+          grunt.log.ok('Adding library: ' + m.getNamespace());
+          maker.addLibrary(m.getDirectory(), cb);
+        });
+      });
+
+      asyncSeries.push(function (cb) {
+        grunt.log.ok('Making the app - please be patient.');
+        maker.make(cb);
+      });
+
+      async.series(
+        asyncSeries,
+        function (err) {
+          if (err) {
+            grunt.log.error([err]);
+            done();
+          } else {
+            var diff = new Date().getTime() - STARTTIME.getTime();
+            diff /= 1000;
+            var mins = Math.floor(diff / 60);
+            var secs = diff - (mins * 60);
+            grunt.log.ok('Done in ' + mins + 'm ' + secs + 's');
+            grunt.log.ok('Output Directory is: ' + outDir);
+            done();
+          }
+        }
+      );
+    })
+    .catch(function (err) {
+      grunt.log.error(err);
+    });
   });
 };

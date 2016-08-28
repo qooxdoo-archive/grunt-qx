@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.1.7 (unreleased)
+
+- Add support for dependencies and externalResources,
+  see: https://github.com/qooxdoo/qooxdoo/issues/9129
+  [pcdummy]
+
 ### 0.1.6 (2016-08-27)
 
 - Add proper support for addScript/addCss and copyResources.

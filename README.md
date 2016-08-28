@@ -28,7 +28,7 @@ grunt.loadNpmTasks('grunt-qx');
 In your project's Gruntfile, add a section named `qx` to the data object passed into `grunt.initConfig()`.
 
 ```js
-var qxpath = '../vendor/qooxdoo';
+var qxpath = 'qooxdoo';
 if ('QOOXDOO_PATH' in process.env) {
   qxpath = process.env.QOOXDOO_PATH;
 }
@@ -37,31 +37,22 @@ grunt.initConfig({
   // Configuration to be run
   qx: {
     options: {
-      appClass: 'qxpromiserest_demo.Application',
-      appName: 'qxpromiserest_demo',
-      appTitle: 'QxPromiserestRest Demo',
-      theme: 'qxpromiserest_demo.theme.Theme',
+      appPath: '.',
+      appClass: 'tweets.Application',
+      appName: 'tweets',
+      appTitle: 'tweets Demo',
+      theme: 'tweets.theme.Theme',
       locales: ['en'],
-      addScript: [
-        '%(QXPROMISE)s/resource/qxpromise/js/es5-sham.min.js',
-        '%(QXPROMISEREST)s/resource/qxpromiserest/js/fetch.min.js',
-        '%(QXPROMISE)s/resource/qxpromise/js/es5-shim.min.js',
-        '%(QXPROMISE)s/resource/qxpromise/js/bluebird.min.js',
-        '%(QXPROMISE)s/resource/qxpromise/js/alameda.min.js'
-      ],
-      addCss: [],
-      libraryDirs: [
-        qxpath + '/framework',
-        '../qxpromiserest/vendor/qxpromise',
-        '../qxpromiserest',
-        '../qxpromiserest/demo/default'
-      ]
+      libaryHints: {
+        'qooxdoo-sdk': qxpath + '/framework'
+      }
     },
 
     source: {
       options: {
         target: 'source',
         outDir: 'build/source/',
+        // Only available within the 'source' target.
         copyResources: true
       }
     },
@@ -86,6 +77,12 @@ grunt.initConfig({
 ```
 
 ### Options
+
+#### options.appPath
+Type: `String`
+Default: '.'
+
+Relative or absolute path to the application.
 
 #### options.appClass
 Type: `String`
@@ -127,8 +124,24 @@ Same replacement as with `addScript` can happen  here.
 
 #### options.libraryDirs
 Type: `Array`
+Default: `[ 'node_modules' ]`
 
-Relative or absolute paths to the libraries to include, each MUST have a "Manifest.json", make sure to add Qooxdoo itself here.
+Relative or absolute paths to the libraries to include, each MUST have a "Manifest.json".
+
+#### options.libraryHints
+Type: `Map`
+
+Map of relative or absolute paths to libraries which will overwrite `options.libraryDirs`.
+
+For example:
+
+```javascript
+options: {
+  libaryHints: {
+    'qooxdoo-sdk': qxpath + '/framework'
+  }
+}
+```
 
 #### options.minify
 Type: `Boolean`

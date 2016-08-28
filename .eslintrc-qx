@@ -1,6 +1,7 @@
 {
   "globals": {
     "qx": true,
-    "qxc": true
+    "qxc": true,
+    "gqxc": true
   }
 }

@@ -27,17 +27,15 @@ module.exports = function (grunt) {
     // Configuration to be run
     qx: {
       options: {
+        appPath: 'demo/qxc.tweets',
         appClass: 'qxc.tweets.Application',
         appName: 'qxc.tweets',
         appTitle: 'qxc.tweets Demo',
         theme: 'qxc.tweets.theme.Theme',
         locales: ['en', 'de'],
-        addScript: [],
-        addCss: [],
-        libraryDirs: [
-          qxpath + '/framework',
-          'demo/qxc.tweets'
-        ]
+        libaryHints: {
+          'qooxdoo-sdk': qxpath + '/framework'
+        }
       },
 
       tweetsSource: {
@@ -70,7 +68,7 @@ module.exports = function (grunt) {
         files: [
           'demo/qxc.tweets/source/class/**/*.js'
         ],
-        tasks: ['qxcompiler:tweetsSource']
+        tasks: ['qx:tweetsSource']
       }
     },
 
@@ -97,7 +95,7 @@ module.exports = function (grunt) {
 
   // Compile source, run server and watch it
   grunt.registerTask('serve', [
-    'qxcompiler:tweetsSource',
+    'qx:tweetsSource',
     'connect:server',
     'watch'
   ]);
