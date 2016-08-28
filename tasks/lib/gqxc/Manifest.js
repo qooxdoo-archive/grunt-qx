@@ -13,14 +13,17 @@ const depCheckHints = function (dependecy, hints) {
   );
 };
 
-const depInDir = function (dependency, dir, grunt) {
+const depInDir = function (dependency, dir) {
   var myDir = path.join(dir, dependency);
   return fs.lstatAsync(myDir)
     .then(function (stats) {
       if (stats.isDirectory()) {
-        grunt.log.error('In dir');
         return Promise.resolve(myDir);
       }
+
+      return Promise.reject(
+        new Error('"' + dependency + '" not in "' + dir + '"')
+      );
     }).catch(function () {
       return Promise.reject(
         new Error('"' + dependency + '" not in "' + dir + '"')
@@ -117,7 +120,7 @@ module.exports = qx.Class.define('gqxc.Manifest', {
         var toCheck = [];
         toCheck.push(depCheckHints(dep, hints));
         dirs.forEach(function (dir) {
-          toCheck.push(depInDir(dep, dir, grunt));
+          toCheck.push(depInDir(dep, dir));
         });
         return Promise.any(toCheck)
           .then(function (dir) {
