@@ -58,9 +58,7 @@ module.exports = function (grunt) {
           break;
         case 'hybrid':
           outDir = path.join(process.cwd(), options.outDir);
-          target = new qxcompiler.targets.HybridTarget(outDir).set({
-            copyResources: options.copyResources
-          });
+          target = new qxcompiler.targets.HybridTarget(outDir);
           break;
         default: // build
           outDir = path.join(process.cwd(), options.outDir);
