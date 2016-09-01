@@ -1,3 +1,8 @@
+### v0.1.8 (2016-09-01)
+
+- Upgrade QxCompiler - now QxCompiler has integrated support for "externalResources".
+  [pcdummy]
+
 ### v0.1.7 (2016-08-28)
 
 - Add support for dependencies and externalResources,
