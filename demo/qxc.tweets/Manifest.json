@@ -32,6 +32,6 @@
   },
 
   "dependencies": [
-    "qooxdoo-sdk"
+    "qooxdoo"
   ]
 }

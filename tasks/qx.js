@@ -12,7 +12,6 @@ gqxc.Manifest = require('./lib/gqxc/Manifest');
 const qxcompiler = require('../vendor/qxcompiler/lib/qxcompiler');
 const async = require('async');
 const path = require('path');
-const sprintf = require('sprintf');
 
 module.exports = function (grunt) {
   // Please see the Grunt documentation for more information regarding task
@@ -33,8 +32,6 @@ module.exports = function (grunt) {
       appTitle: 'Tweets Demo',
       theme: 'tweets.theme.Theme',
       locales: ['en'],
-      addScript: [],
-      addCss: [],
       libaryHints: {},
       libraryDirs: [
         'node_modules'
@@ -49,57 +46,6 @@ module.exports = function (grunt) {
     var appManifest = new gqxc.Manifest(options.appPath, grunt);
     var depsPromise = appManifest.getDependecies(options.libaryHints, options.libraryDirs);
     depsPromise.then(function (dependencies) {
-      // addScript/addCss Variables
-      var addVariables = {};
-
-      dependencies.forEach(function (m) {
-        var addVarStore = addVariables;
-        var namespace = m.getNamespace().toUpperCase();
-        var splitted = namespace.split('.');
-
-        // If we aren't using copyResources and the target is either
-        // 'source' or 'hybrid' we have to make a relative path for
-        // the inclusion URL else we can use '.'.
-        if (!options.copyResources &&
-            (options.target === 'source' || options.target === 'hybrid')) {
-          // Relative path for external resources.
-          var libraryDir = path.relative(
-            path.join(process.cwd(), options.outDir),
-            path.join(process.cwd(), m.getDirectory(), 'source')
-          );
-          for (var i = 0; i < splitted.length - 1; i++) {
-            var sp = splitted[i];
-            if (!(sp in addVarStore)) {
-              addVarStore[sp] = {};
-            }
-            addVarStore = addVarStore[sp];
-          }
-          addVarStore[splitted[splitted.length - 1]] = libraryDir;
-        } else {
-          for (var x = 0; x < splitted.length - 1; x++) {
-            var sp2 = splitted[x];
-            if (!(sp2 in addVarStore)) {
-              addVarStore[sp2] = {};
-            }
-            addVarStore = addVarStore[sp2];
-          }
-          addVarStore[splitted[splitted.length - 1]] = '.';
-        }
-
-        // Fetch addScript/addCss from each dependency and add it to
-        // to the options list.
-        options.addScript = options.addScript.concat(m.getAddScript());
-        options.addCss = options.addCss.concat(m.getAddCss());
-      });
-
-      // now replace variables in addScript / addCss.
-      for (var i = 0; i < options.addScript.length; i++) {
-        options.addScript[i] = sprintf(options.addScript[i], addVariables);
-      }
-      for (var x = 0; x < options.addCss.length; x++) {
-        options.addCss[x] = sprintf(options.addCss[x], addVariables);
-      }
-
       // Select the target and set its options.
       var target;
       var outDir;
@@ -107,24 +53,19 @@ module.exports = function (grunt) {
         case 'source':
           outDir = path.join(process.cwd(), options.outDir);
           target = new qxcompiler.targets.SourceTarget(outDir).set({
-            addScript: options.addScript,
-            addCss: options.addCss,
             copyResources: options.copyResources
           });
           break;
         case 'hybrid':
           outDir = path.join(process.cwd(), options.outDir);
           target = new qxcompiler.targets.HybridTarget(outDir).set({
-            addScript: options.addScript,
-            addCss: options.addCss
+            copyResources: options.copyResources
           });
           break;
         default: // build
           outDir = path.join(process.cwd(), options.outDir);
           target = new qxcompiler.targets.BuildTarget(outDir).set({
-            minify: options.minify,
-            addScript: options.addScript,
-            addCss: options.addCss
+            minify: options.minify
           });
       }
 

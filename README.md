@@ -44,7 +44,7 @@ grunt.initConfig({
       theme: 'tweets.theme.Theme',
       locales: ['en'],
       libaryHints: {
-        'qooxdoo-sdk': qxpath + '/framework'
+        'qooxdoo': qxpath + '/framework'
       }
     },
 
@@ -109,19 +109,6 @@ Type: `Array`
 
 Array of locales to integrate.
 
-#### options.addScript
-Type: `Array`
-
-Array of scripts to load before Qooxdoo init, each entry can have a
-sprintf style variable `%(<NAMESPACE>)` this will be replaced with the actual
-path of the libraries source folder on a source/hybrid target, when using the
-build target it will use '.' as replacement.
-
-#### options.addCss
-Type: `Array`
-
-Same replacement as with `addScript` can happen  here.
-
 #### options.libraryDirs
 Type: `Array`
 Default: `[ 'node_modules' ]`
@@ -138,7 +125,7 @@ For example:
 ```javascript
 options: {
   libaryHints: {
-    'qooxdoo-sdk': qxpath + '/framework'
+    'qooxdoo': qxpath + '/framework'
   }
 }
 ```
