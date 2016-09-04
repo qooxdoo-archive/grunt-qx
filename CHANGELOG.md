@@ -1,3 +1,28 @@
+### v0.1.13 (2016-09-04)
+
+- Fix a typo.
+  [pcdummy]
+
+### v0.1.12 (2016-09-04)
+
+- Fix another syntax error.
+  [pcdummy]
+
+### v0.1.11 (2016-09-04)
+
+- Fix syntax error.
+  [pcdummy]
+
+### v0.1.10 (2016-09-04)
+
+- Update qxcompiler to check Qx path of same folder.
+  [pcdummy]
+
+### v0.1.9 (2016-09-03)
+
+- Update of qxcompiler.
+  [pcdummy]
+
 ### v0.1.8 (2016-09-01)
 
 - Upgrade QxCompiler - now QxCompiler has integrated support for "externalResources".
