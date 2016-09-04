@@ -32,7 +32,7 @@ module.exports = function (grunt) {
       appTitle: 'Tweets Demo',
       theme: 'tweets.theme.Theme',
       locales: ['en'],
-      libaryHints: {},
+      libraryHints: {},
       libraryDirs: [
         'node_modules'
       ],
@@ -44,7 +44,7 @@ module.exports = function (grunt) {
     var done = this.async();
 
     var appManifest = new gqxc.Manifest(options.appPath, grunt);
-    var depsPromise = appManifest.getDependecies(options.libaryHints, options.libraryDirs);
+    var depsPromise = appManifest.getDependecies(options.libraryHints, options.libraryDirs);
     depsPromise.then(function (dependencies) {
       // Select the target and set its options.
       var target;

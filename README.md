@@ -43,7 +43,7 @@ grunt.initConfig({
       appTitle: 'tweets Demo',
       theme: 'tweets.theme.Theme',
       locales: ['en'],
-      libaryHints: {
+      libraryHints: {
         'qooxdoo': qxpath + '/framework'
       }
     },

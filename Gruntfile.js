@@ -33,7 +33,7 @@ module.exports = function (grunt) {
         appTitle: 'qxc.tweets Demo',
         theme: 'qxc.tweets.theme.Theme',
         locales: ['en', 'de'],
-        libaryHints: {
+        libraryHints: {
           qooxdoo: qxpath + '/framework'
         }
       },
